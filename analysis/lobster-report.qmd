@@ -58,18 +58,22 @@ ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
 ggsave(here::here("figs/total_lobsterpercent.png"))
 ```
 
-I would also like to view this same data by month. To do this, i would first need to refilter my object by month.\
+I would also like to view this same data by year. To do this, i would first need to refilter my object by year.\
 
 ```{r}
-#Filter by size and month
-lobster_size_lrg_month <- lobster_abundance %>% filter(YEAR %in% c(2019, 2020, 2021)) %>% mutate(SIZE_BIN = if_else(SIZE_MM <= 70, "small", "large"),MONTH = factor(MONTH)) %>%
-  group_by(SITE, MONTH, SIZE_BIN) %>%
-  summarize(COUNT = n(), .groups = "drop") %>%
-  drop_na()
-ggplot(lobster_size_lrg_month, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
+#Filter by size and year
+lobster_size_lrg_year <- lobster_abundance %>%
+  filter(YEAR %in% 2012:2022) %>%
+  mutate(SIZE_BIN = if_else(SIZE_MM <= 70, "small", "large"),YEAR = factor(YEAR)) %>%group_by(YEAR, SITE, SIZE_BIN) %>%summarize(COUNT = n(), .groups = "drop") %>%drop_na()
+
+#plot it
+ggplot(lobster_size_lrg_year,
+       aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
   geom_col(position = "fill") +
-  facet_wrap(~ MONTH) +
+  facet_wrap(~ YEAR) +
   scale_y_continuous(labels = scales::percent) +
   labs(x = "Site",y = "Percent of lobsters",fill = "Size bin")
-ggsave(here::here("figs/total_lobsterbymonth.png"))
+ggsave(here::here("figs/total_lobsterbyyear.png"))
 ```
+
+lobster_abundance %\>% filter(YEAR %in% c(2019, 2020, 2021)) %\>% count(MONTH)
