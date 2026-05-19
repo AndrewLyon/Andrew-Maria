@@ -40,7 +40,7 @@ lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220
 
 ```
 
-## Data analysis
+## Data analysis for Abundance
 
 I would like to visualize the percentage of all caught lobster based on size:
 
