@@ -1,26 +1,46 @@
 ---
 title: "Lobster Report"
+author: "Andrew L & Maria Mendoza"
 format: html
 editor: visual
+toc: true
 ---
 
-## Quarto
+## Purpose
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Analyze lobster abundance and size data sets from the Santa Barbara Coastal LTER. This data helps informs scientists about the abundance of California spiny lobster (*Panulirus interruptus*). This data can help make predictions on overall health and quantity of lobster along the Santa Barbara Channel
 
-## Running Code
+Reed, Daniel C. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012*. Santa Barbara Coastal LTER. https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Here we are reviewing the counts (abundance) data set. This data set appears to monitor the lobster within a specific area.
+
+From the Authors:
+
+This dataset contains two tables. 1) Abundance and size data collected annually by divers in late summer before the start of the fishing season at five SBC LTER long term kelp forest study sites: two within MPAs (Naples and Isla Vista) and three outside (Arroyo Quemado, Mohawk and Carpinteria). 2) Fishing pressure, as determined by counting the number of commercial trap floats. Data are collected every two to four weeks during the lobster fishing season (October to March) at nine sites along the mainland, eight of which are also SBC LTER long-term kelp forest study reefs.
+
+See Methods for more information. 
+
+## Data clean up & quality control
+
+First import our R libraries
 
 ```{r}
-1 + 1
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(here)
 ```
 
-You can add options to executable code like this
+We then import the data. For this analysis I will be using the lobster abundance csv file.
 
 ```{r}
-#| echo: false
-2 * 2
+#load the aata
+lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv"))
+#view the data
+head(lobster_abundance, n=5)
+summary(head(lobster_abundance,n=10))
+list(lobster_abundance)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+### 
