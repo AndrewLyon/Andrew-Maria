@@ -6,6 +6,5 @@ This is a repository for Andrew and Maria's analysis of lobster data for assignm
 
 Data is sourced below and placed in the data directory. I used my gmail to sign in to access the data.
 
-SBC LTER: Reef:
-Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.\
+SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.\
 <https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-sbc.77.8>
