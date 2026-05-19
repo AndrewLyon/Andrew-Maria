@@ -68,11 +68,13 @@ lobster_size_lrg_year <- lobster_abundance %>%
 
 #plot it
 ggplot(lobster_size_lrg_year,
-       aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
+       aes(x = YEAR, y = COUNT, fill = SIZE_BIN)) +
   geom_col(position = "fill") +
-  facet_wrap(~ YEAR) +
+  facet_wrap(~ SITE) +
   scale_y_continuous(labels = scales::percent) +
-  labs(x = "Site",y = "Percent of lobsters",fill = "Size bin")
+  labs(x = "Year",y = "Percent of lobsters",fill = "Size bin") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),strip.text = element_text(size = 12),legend.position = "right")
 ggsave(here::here("figs/total_lobsterbyyear.png"))
 ```
 
