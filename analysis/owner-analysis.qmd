@@ -70,6 +70,8 @@ aque_70mm <- lobster_abundance %>%
     filter(SITE == "AQUE" & SIZE_MM >= 70)
 ```
 
+### Exercise 4 Question 4
+
 We can group the data based on other factors we may care about. Here we can view the lobster size anchored to it's location.
 
 ```{r}
@@ -82,4 +84,77 @@ max_lobster <- lobster_abundance %>%
 
 ## Exercise: Data Visualization
 
-First we will
+First we will bring in a blank version of the data as well as importing our necessary libraries for analysis and visualization. This will act as a 'blank state'.
+
+```{r}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv")) %>% 
+    mutate(SIZE_MM = na_if(SIZE_MM, -99999))
+```
+
+### Exercise 9 Question 5
+
+Generate a multi-panel plot of lobster carapace length (`SIZE_MM`) using `ggplot()`, `geom_histogram()`, and `facet_wrap()`. Use the variable `SITE` in `facet_wrap()`. Use the object `lobster_abundance`.
+
+```{r}
+ggplot(data = lobster_abundance,  aes(x = SIZE_MM)) + geom_histogram() +facet_wrap(~SITE)
+```
+
+### Exercise 10 Question 6
+
+Create a line graph of the number of total lobsters observed (y-axis) by year (x-axis) in the study, grouped by `SITE`.
+
+```{r}
+#First summarize the data
+lobsters_summarize <- lobster_abundance %>% 
+  group_by(SITE, YEAR) %>% 
+  summarize(COUNT = n())
+
+#Create two plots:
+#line plot
+ggplot(data = lobsters_summarize, aes(x = YEAR, y = COUNT)) +
+  geom_line(aes(color = SITE)) 
+
+#line and point plot
+ggplot(data = lobsters_summarize, aes(x = YEAR, y = COUNT)) +
+  geom_point(aes(color = SITE)) +
+  geom_line(aes(color = SITE)) 
+```
+
+### Exercise 11 Question 7
+
+Now we will create a bar graph that shows the amount of small and large sized carapace lobsters at each `SITE`from 2019-2021. There is no real definition as 70MM setting a boundary for either small or large.
+
+```{r}
+#Define our large lobster
+lobster_size_lrg <- lobster_abundance %>% filter(YEAR %in% c(2019, 2020, 2021)) %>% mutate(SIZE_BIN = if_else(SIZE_MM <= 70, true = "small", false = "large")) %>%group_by(SITE, SIZE_BIN) %>%  summarize(COUNT = n()) %>% drop_na()
+
+#graph it
+#bar plot
+ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
+    geom_col()
+
+#dodged bar plot
+ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
+    geom_col(position = "dodge")
+```
+
+### Exercise 12 Question 8
+
+Now let's make some pretty graphs!
+
+This graph is a
+
+```{r}
+#| label: fig - Total Large vs Small Lobster Caught
+ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
+  geom_col(position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("large" = "#E76F51","small" = "#2A9D8F")) +
+  labs(x = "Site",y = "Percent of total lobsters",fill = "Size bin")
+ggsave(here::here("figs/total_lobsterpercent.png"))
+```
