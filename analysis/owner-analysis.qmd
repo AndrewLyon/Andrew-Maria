@@ -147,7 +147,7 @@ ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
 
 Now let's make some pretty graphs!
 
-This graph is a
+This graph shows a proportion of all observed lobsters across all of the areas.
 
 ```{r}
 #| label: fig - Total Large vs Small Lobster Caught
