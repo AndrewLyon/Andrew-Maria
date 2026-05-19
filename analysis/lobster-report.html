@@ -86,10 +86,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
-  <li><a href="#data-clean-up-quality-control" id="toc-data-clean-up-quality-control" class="nav-link" data-scroll-target="#data-clean-up-quality-control">Data clean up &amp; quality control</a>
-  <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  </ul></li>
+  <li><a href="#data-clean-up-quality-control" id="toc-data-clean-up-quality-control" class="nav-link" data-scroll-target="#data-clean-up-quality-control">Data clean up &amp; quality control</a></li>
+  <li><a href="#data-analysis" id="toc-data-analysis" class="nav-link" data-scroll-target="#data-analysis">Data analysis</a></li>
   </ul>
 </nav>
 </div>
@@ -171,57 +169,65 @@ date (1): DATE
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#view the data</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(lobster_abundance, <span class="at">n=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 10
-   YEAR MONTH DATE       SITE  TRANSECT REPLICATE SIZE_MM COUNT NUM_AO  AREA
-  &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1  2012     8 2012-08-20 IVEE         1 A          -99999     0      0   300
-2  2012     8 2012-08-20 IVEE         1 B          -99999     0      0   300
-3  2012     8 2012-08-20 IVEE         1 C          -99999     0      0   300
-4  2012     8 2012-08-20 IVEE         1 D          -99999     0      0   300
-5  2012     8 2012-08-20 IVEE         2 A          -99999     0      0   300</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">head</span>(lobster_abundance,<span class="at">n=</span><span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      YEAR          MONTH        DATE                   SITE       TRANSECT  
- Min.   :2012   Min.   :8   Min.   :2012-08-20   Length   :10   Min.   :1.0  
- 1st Qu.:2012   1st Qu.:8   1st Qu.:2012-08-20   N.unique : 1   1st Qu.:1.0  
- Median :2012   Median :8   Median :2012-08-20   N.blank  : 0   Median :2.0  
- Mean   :2012   Mean   :8   Mean   :2012-08-20   Min.nchar: 4   Mean   :1.8  
- 3rd Qu.:2012   3rd Qu.:8   3rd Qu.:2012-08-20   Max.nchar: 4   3rd Qu.:2.0  
- Max.   :2012   Max.   :8   Max.   :2012-08-20                  Max.   :3.0  
-     REPLICATE     SIZE_MM           COUNT         NUM_AO       AREA    
- Length   :10   Min.   :-99999   Min.   :0.0   Min.   :0   Min.   :300  
- N.unique : 4   1st Qu.:-99999   1st Qu.:0.0   1st Qu.:0   1st Qu.:300  
- N.blank  : 0   Median :-99999   Median :0.0   Median :0   Median :300  
- Min.nchar: 1   Mean   :-79986   Mean   :0.2   Mean   :0   Mean   :300  
- Max.nchar: 1   3rd Qu.:-99999   3rd Qu.:0.0   3rd Qu.:0   3rd Qu.:300  
-                Max.   :    70   Max.   :1.0   Max.   :0   Max.   :300  </code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(lobster_abundance)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[[1]]
-# A tibble: 7,574 × 10
-    YEAR MONTH DATE       SITE  TRANSECT REPLICATE SIZE_MM COUNT NUM_AO  AREA
-   &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
- 1  2012     8 2012-08-20 IVEE         1 A          -99999     0      0   300
- 2  2012     8 2012-08-20 IVEE         1 B          -99999     0      0   300
- 3  2012     8 2012-08-20 IVEE         1 C          -99999     0      0   300
- 4  2012     8 2012-08-20 IVEE         1 D          -99999     0      0   300
- 5  2012     8 2012-08-20 IVEE         2 A          -99999     0      0   300
- 6  2012     8 2012-08-20 IVEE         2 B          -99999     0      0   300
- 7  2012     8 2012-08-20 IVEE         2 C          -99999     0      0   300
- 8  2012     8 2012-08-20 IVEE         2 D          -99999     0      0   300
- 9  2012     8 2012-08-20 IVEE         3 A              70     1      0   300
-10  2012     8 2012-08-20 IVEE         3 B              60     1      0   300
-# ℹ 7,564 more rows</code></pre>
-</div>
-</div>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section"></h3>
 </section>
+<section id="data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis">Data analysis</h2>
+<p>I would like to visualize the percentage of all caught lobster based on size:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First identify our lobster classifications</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>lobster_size_lrg <span class="ot">&lt;-</span> lobster_abundance <span class="sc">%&gt;%</span> <span class="fu">filter</span>(YEAR <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">SIZE_BIN =</span> <span class="fu">if_else</span>(SIZE_MM <span class="sc">&lt;=</span> <span class="dv">70</span>, <span class="at">true =</span> <span class="st">"small"</span>, <span class="at">false =</span> <span class="st">"large"</span>)) <span class="sc">%&gt;%</span><span class="fu">group_by</span>(SITE, SIZE_BIN) <span class="sc">%&gt;%</span>  <span class="fu">summarize</span>(<span class="at">COUNT =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by SITE and SIZE_BIN.
+ℹ Output is grouped by SITE.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(SITE, SIZE_BIN))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#visualize</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> lobster_size_lrg, <span class="fu">aes</span>(<span class="at">x =</span> SITE, <span class="at">y =</span> COUNT, <span class="at">fill =</span> SIZE_BIN)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"large"</span> <span class="ot">=</span> <span class="st">"#E76F51"</span>,<span class="st">"small"</span> <span class="ot">=</span> <span class="st">"#2A9D8F"</span>)) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Site"</span>,<span class="at">y =</span> <span class="st">"Percent of total lobsters"</span>,<span class="at">fill =</span> <span class="st">"Size bin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lobster-report_files/figure-html/fig%20-%20Total%20Large%20vs%20Small%20Lobster%20Caught-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"figs/total_lobsterpercent.png"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving 7 x 5 in image</code></pre>
+</div>
+</div>
+<p>I would also like to view this same data by month. To do this, i would first need to refilter my object by month.<br>
+</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter by size and month</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lobster_size_lrg_month <span class="ot">&lt;-</span> lobster_abundance <span class="sc">%&gt;%</span> <span class="fu">filter</span>(YEAR <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">SIZE_BIN =</span> <span class="fu">if_else</span>(SIZE_MM <span class="sc">&lt;=</span> <span class="dv">70</span>, <span class="st">"small"</span>, <span class="st">"large"</span>),<span class="at">MONTH =</span> <span class="fu">factor</span>(MONTH)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(SITE, MONTH, SIZE_BIN) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">COUNT =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(lobster_size_lrg_month, <span class="fu">aes</span>(<span class="at">x =</span> SITE, <span class="at">y =</span> COUNT, <span class="at">fill =</span> SIZE_BIN)) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> MONTH) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Site"</span>,<span class="at">y =</span> <span class="st">"Percent of lobsters"</span>,<span class="at">fill =</span> <span class="st">"Size bin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lobster-report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"figs/total_lobsterbymonth.png"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving 7 x 5 in image</code></pre>
+</div>
+</div>
 </section>
 
 </main>
