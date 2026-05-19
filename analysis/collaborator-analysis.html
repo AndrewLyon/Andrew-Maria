@@ -177,6 +177,29 @@ date (1): DATE
 # ℹ 2 more variables: OBSERVER &lt;chr&gt;, NOTES &lt;chr&gt;</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>lobster_traps <span class="ot">&lt;-</span> lobster_traps <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">TRAPS =</span> <span class="fu">na_if</span>(TRAPS, <span class="sc">-</span><span class="dv">99999</span>))</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>not_napl <span class="ot">&lt;-</span> lobster_traps <span class="sc">%&gt;%</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(SITE <span class="sc">!=</span> <span class="st">"NAPL"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>carp_20_traps <span class="ot">&lt;-</span> lobster_traps <span class="sc">%&gt;%</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(SITE <span class="sc">==</span> <span class="st">"CARP"</span> <span class="sc">&amp;</span> TRAPS <span class="sc">&gt;</span> <span class="dv">20</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="co"># `group_by() %&gt;% summarize()` practice</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>max_lobster_traps <span class="ot">&lt;-</span> lobster_traps <span class="sc">%&gt;%</span> </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(SITE, MONTH) <span class="sc">%&gt;%</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(<span class="at">MAX_TRAPS =</span> <span class="fu">max</span>(TRAPS, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has regrouped the output.
+ℹ Summaries were computed grouped by SITE and MONTH.
+ℹ Output is grouped by SITE.
+ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+ℹ Use `summarise(.by = c(SITE, MONTH))` for per-operation grouping
+  (`?dplyr::dplyr_by`) instead.</code></pre>
+</div>
+</div>
 </section>
 
 </main>
