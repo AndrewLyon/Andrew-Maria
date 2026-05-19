@@ -98,10 +98,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="quarto" class="level2">
-<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
-<p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
-</section>
 <section id="running-code" class="level2">
 <h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
 <div class="cell">
@@ -163,6 +159,21 @@ date (1): DATE
 4  2012    10 2012-10-05 2012-2013      ABUR  119 44.800    119 44.750     10
 5  2012    10 2012-10-05 2012-2013      ABUR  119 44.750    119 44.700     10
 6  2012    10 2012-10-05 2012-2013      ABUR  119 44.700    119 44.650      6
+# ℹ 2 more variables: OBSERVER &lt;chr&gt;, NOTES &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lobster_traps)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+   YEAR MONTH DATE       FISHING_SEASON SITE  SEGMENT_START SEGMENT_END TRAPS
+  &lt;dbl&gt; &lt;dbl&gt; &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;       &lt;dbl&gt;
+1  2021     3 2021-03-11 2020-2021      CARP  119 32.100    119 32.050      2
+2  2021     3 2021-03-11 2020-2021      CARP  119 32.050    119 32.000      2
+3  2021     3 2021-03-11 2020-2021      CARP  119 32.000    119 31.950      0
+4  2021     3 2021-03-11 2020-2021      CARP  119 31.950    119 31.900      0
+5  2021     3 2021-03-11 2020-2021      CARP  119 31.900    119 31.850      0
+6  2021     3 2021-03-11 2020-2021      CARP  119 31.850    119 31.800      0
 # ℹ 2 more variables: OBSERVER &lt;chr&gt;, NOTES &lt;chr&gt;</code></pre>
 </div>
 </div>
