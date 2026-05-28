@@ -25,6 +25,8 @@ See Methods for more information. 
 First import our R libraries
 
 ```{r}
+#| warning: false
+#| message: false
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -35,6 +37,9 @@ library(here)
 We then import the data. For this analysis I will be using the lobster abundance csv file.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
 #load the aata
 lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv"))
 #view the data
@@ -87,6 +92,8 @@ max_lobster <- lobster_abundance %>%
 First we will bring in a blank version of the data as well as importing our necessary libraries for analysis and visualization. This will act as a 'blank state'.
 
 ```{r}
+#| warning: false
+#| message: false
 library(readr)
 library(dplyr)
 library(ggplot2)
