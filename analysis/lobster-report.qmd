@@ -1,18 +1,19 @@
 ---
 title: "Lobster Report"
-author: "Andrew L & Maria Mendoza"
+author: "Andrew L"
 format: html
+theme: cosmo
 editor: visual
 toc: true
 ---
 
 ## Purpose
 
-Analyze lobster abundance and size data sets from the Santa Barbara Coastal LTER. This data helps informs scientists about the abundance of California spiny lobster (*Panulirus interruptus*). This data can help make predictions on overall health and quantity of lobster along the Santa Barbara Channel
+Analyze lobster abundance and size data sets from the Santa Barbara Coastal LTER. This data helps informs scientists about the abundance of California spiny lobster (*Panulirus interruptus*). This data can help make predictions on overall health and quantity of lobster along the Santa Barbara Channel.
 
-Reed, Daniel C. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012*. Santa Barbara Coastal LTER. https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18.
+Reed, Daniel C. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012*. Santa Barbara Coastal LTER. <https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18>.
 
-Here we are reviewing the counts (abundance) data set. This data set appears to monitor the lobster within a specific area.
+Here we are reviewing the counts (abundance) data set. This data set appears to monitor the lobster.
 
 From the Authors:
 
@@ -25,6 +26,8 @@ See Methods for more information. 
 First import our R libraries
 
 ```{r}
+#| warning: false
+#| message: false
 library(readr)
 library(dplyr)
 library(ggplot2)
@@ -35,47 +38,58 @@ library(here)
 We then import the data. For this analysis I will be using the lobster abundance csv file.
 
 ```{r}
+#| warning: false
+#| message: false
+#| echo: false
 #load the aata
-lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv"))
+lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv")) %>% mutate(SIZE_MM = na_if(SIZE_MM, -99999))
 
 ```
 
 ## Data analysis for Abundance
 
-I would like to visualize the percentage of all caught lobster based on size:
+I would like to visualize the percentage of all counted lobster based on counts and year:
 
 ```{r}
-#| label: fig - Total Large vs Small Lobster Caught
-#First identify our lobster classifications
-lobster_size_lrg <- lobster_abundance %>% filter(YEAR %in% c(2019, 2020, 2021)) %>% mutate(SIZE_BIN = if_else(SIZE_MM <= 70, true = "small", false = "large")) %>%group_by(SITE, SIZE_BIN) %>%  summarize(COUNT = n()) %>% drop_na()
+#| label: fig-Total-Lobster-by-Year-Site
+#| fig-cap: "Lobster Percent of Counts Across 10 years and their Sites."
+#| fig-alt: "Barplot of years. Each bar is colored by the Site and it's propoertion is that of the total counts that year"
+#| echo: false
+#| warning: false
+#| message: false
+
 
 #visualize
-ggplot(data = lobster_size_lrg, aes(x = SITE, y = COUNT, fill = SIZE_BIN)) +
-  geom_col(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(values = c("large" = "#E76F51","small" = "#2A9D8F")) +
-  labs(x = "Site",y = "Percent of total lobsters",fill = "Size bin")
+ggplot(data = lobster_abundance, aes(x = factor(YEAR), y = COUNT, fill = SITE)) +
+  geom_col(position = "fill") + scale_y_continuous(labels = scales::percent) +
+  labs(x = "Year",y = "Percent of Yearly Lobster Catch",fill = "Site")
 ggsave(here::here("figs/total_lobsterpercent.png"))
 ```
 
-I would also like to view this same data by year. To do this, i would first need to refilter my object by year.\
+I would also like to view this same data by site and individual year. To do this, i would first need to refilter my object.\
 
 ```{r}
-#Filter by size and year
-lobster_size_lrg_year <- lobster_abundance %>%
-  filter(YEAR %in% 2012:2022) %>%
-  mutate(SIZE_BIN = if_else(SIZE_MM <= 70, "small", "large"),YEAR = factor(YEAR)) %>%group_by(YEAR, SITE, SIZE_BIN) %>%summarize(COUNT = n(), .groups = "drop") %>%drop_na()
+#| label: fig-Counts-by-Year-per-Site
+#| fig-cap: "Lobster Counts by Year per Site."
+#| fig-alt: "Scatterplot showing lobster counts on the y-axis and sites on the x-axis. Points are aligned by and colored by year."
+#| echo: false
+#| warning: false
+#| message: false
+
+
+#compress down the counts for the year
+lobster_year <- lobster_abundance %>% filter(YEAR %in% 2012:2022) %>% mutate(YEAR = factor(YEAR)) %>% drop_na(YEAR, SITE, COUNT) %>% group_by(YEAR, SITE) %>% summarize(COUNT = n(),.groups = "drop")
 
 #plot it
-ggplot(lobster_size_lrg_year,
-       aes(x = YEAR, y = COUNT, fill = SIZE_BIN)) +
-  geom_col(position = "fill") +
-  facet_wrap(~ SITE) +
-  scale_y_continuous(labels = scales::percent) +
-  labs(x = "Year",y = "Percent of lobsters",fill = "Size bin") +
-  theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),strip.text = element_text(size = 12),legend.position = "right")
-ggsave(here::here("figs/total_lobsterbyyear.png"))
+
+ggplot(lobster_year, aes(x = SITE,y = COUNT,color = factor(YEAR),group = factor(YEAR))) +geom_point(position = position_dodge(width = 1), size = 2) +labs(x = "Site", y = "Counts (x10)", color = "Year") +theme_classic()
+ggsave(here::here("figs/total_lobstercountyear.png"))
 ```
 
-lobster_abundance %\>% filter(YEAR %in% c(2019, 2020, 2021)) %\>% count(MONTH)
+## Data Analysis and Conclusions
+
+Using the catch counts by year, I thought it would be interesting to see how the yearly lobster catch would compare to itself across time. My main thought is that there could be some trends that would warrant further investigation.
+
+To tackle this question, I first thought of the data as a landscape across time that we can derive external population pressures. First I generated @fig-Total-Lobster-by-Year-Site to identify the sites that had the most lobsters counted in the year. Coloring the bars by sites helps identify sites with a larger quantity for that year. I find it interesting that the proportion of lobsters counted at the IVEE and NAPL sites increased a lot between 2012 and 2013. Perhaps there may have been a shift in these environments that warrant further study.
+
+Next, I wanted to see individual counts by site in the year. To accomplish this, I sorted the data into single data points, then graphed those as dots across the time frame grouped by the year on the x axis. With @fig-Counts-by-Year-per-Site, we can see that every site beside the AQUE site had an almost parabolic change in observations at the sites across time. Pretty Cool!

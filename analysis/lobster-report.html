@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Andrew L &amp; Maria Mendoza">
+<meta name="author" content="Andrew L">
 
 <title>Lobster Report</title>
 <style>
@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="lobster-report_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="lobster-report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="lobster-report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="lobster-report_files/libs/bootstrap/bootstrap-138a6193a3bd40baf1e627da441a4734.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="lobster-report_files/libs/bootstrap/bootstrap-8ffd5f67044e5306d9846f29df41dda5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -88,6 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#purpose" id="toc-purpose" class="nav-link active" data-scroll-target="#purpose">Purpose</a></li>
   <li><a href="#data-clean-up-quality-control" id="toc-data-clean-up-quality-control" class="nav-link" data-scroll-target="#data-clean-up-quality-control">Data clean up &amp; quality control</a></li>
   <li><a href="#data-analysis-for-abundance" id="toc-data-analysis-for-abundance" class="nav-link" data-scroll-target="#data-analysis-for-abundance">Data analysis for Abundance</a></li>
+  <li><a href="#data-analysis-and-conclusions" id="toc-data-analysis-and-conclusions" class="nav-link" data-scroll-target="#data-analysis-and-conclusions">Data Analysis and Conclusions</a></li>
   </ul>
 </nav>
 </div>
@@ -105,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Andrew L &amp; Maria Mendoza </p>
+             <p>Andrew L </p>
           </div>
   </div>
     
@@ -120,9 +121,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="purpose" class="level2">
 <h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
-<p>Analyze lobster abundance and size data sets from the Santa Barbara Coastal LTER. This data helps informs scientists about the abundance of California spiny lobster (<em>Panulirus interruptus</em>). This data can help make predictions on overall health and quantity of lobster along the Santa Barbara Channel</p>
-<p>Reed, Daniel C. <em>SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012</em>. Santa Barbara Coastal LTER. https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18.</p>
-<p>Here we are reviewing the counts (abundance) data set. This data set appears to monitor the lobster within a specific area.</p>
+<p>Analyze lobster abundance and size data sets from the Santa Barbara Coastal LTER. This data helps informs scientists about the abundance of California spiny lobster (<em>Panulirus interruptus</em>). This data can help make predictions on overall health and quantity of lobster along the Santa Barbara Channel.</p>
+<p>Reed, Daniel C. <em>SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012</em>. Santa Barbara Coastal LTER. <a href="https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18" class="uri">https://doi.org/10.6073/pasta/25aa371650a671bafad64dd25a39ee18</a>.</p>
+<p>Here we are reviewing the counts (abundance) data set. This data set appears to monitor the lobster.</p>
 <p>From the Authors:</p>
 <p>This dataset contains two tables. 1) Abundance and size data collected annually by divers in late summer before the start of the fishing season at five SBC LTER long term kelp forest study sites: two within MPAs (Naples and Isla Vista) and three outside (Arroyo Quemado, Mohawk and Carpinteria). 2) Fishing pressure, as determined by counting the number of commercial trap floats. Data are collected every two to four weeks during the lobster fishing season (October to March) at nine sites along the mainland, eight of which are also SBC LTER long-term kelp forest study reefs.</p>
 <p>See Methods for more information.&nbsp;</p>
@@ -132,107 +133,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>First import our R libraries</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/drew/Documents/RStudio/Andrew-Maria</code></pre>
-</div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We then import the data. For this analysis I will be using the lobster abundance csv file.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load the aata</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>lobster_abundance <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/Lobster_Abundance_All_Years_20220829.csv"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Rows: 7574 Columns: 10
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: ","
-chr  (2): SITE, REPLICATE
-dbl  (7): YEAR, MONTH, TRANSECT, SIZE_MM, COUNT, NUM_AO, AREA
-date (1): DATE
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-</div>
-</div>
 </section>
 <section id="data-analysis-for-abundance" class="level2">
 <h2 class="anchored" data-anchor-id="data-analysis-for-abundance">Data analysis for Abundance</h2>
-<p>I would like to visualize the percentage of all caught lobster based on size:</p>
+<p>I would like to visualize the percentage of all counted lobster based on counts and year:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#First identify our lobster classifications</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>lobster_size_lrg <span class="ot">&lt;-</span> lobster_abundance <span class="sc">%&gt;%</span> <span class="fu">filter</span>(YEAR <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">SIZE_BIN =</span> <span class="fu">if_else</span>(SIZE_MM <span class="sc">&lt;=</span> <span class="dv">70</span>, <span class="at">true =</span> <span class="st">"small"</span>, <span class="at">false =</span> <span class="st">"large"</span>)) <span class="sc">%&gt;%</span><span class="fu">group_by</span>(SITE, SIZE_BIN) <span class="sc">%&gt;%</span>  <span class="fu">summarize</span>(<span class="at">COUNT =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span> <span class="fu">drop_na</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`summarise()` has regrouped the output.
-ℹ Summaries were computed grouped by SITE and SIZE_BIN.
-ℹ Output is grouped by SITE.
-ℹ Use `summarise(.groups = "drop_last")` to silence this message.
-ℹ Use `summarise(.by = c(SITE, SIZE_BIN))` for per-operation grouping
-  (`?dplyr::dplyr_by`) instead.</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#visualize</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> lobster_size_lrg, <span class="fu">aes</span>(<span class="at">x =</span> SITE, <span class="at">y =</span> COUNT, <span class="at">fill =</span> SIZE_BIN)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"large"</span> <span class="ot">=</span> <span class="st">"#E76F51"</span>,<span class="st">"small"</span> <span class="ot">=</span> <span class="st">"#2A9D8F"</span>)) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Site"</span>,<span class="at">y =</span> <span class="st">"Percent of total lobsters"</span>,<span class="at">fill =</span> <span class="st">"Size bin"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="lobster-report_files/figure-html/fig%20-%20Total%20Large%20vs%20Small%20Lobster%20Caught-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-Total-Lobster-by-Year-Site" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Barplot of years. Each bar is colored by the Site and it's propoertion is that of the total counts that year">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Total-Lobster-by-Year-Site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lobster-report_files/figure-html/fig-Total-Lobster-by-Year-Site-1.png" class="img-fluid figure-img" alt="Barplot of years. Each bar is colored by the Site and it's propoertion is that of the total counts that year" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Total-Lobster-by-Year-Site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Lobster Percent of Counts Across 10 years and their Sites.
+</figcaption>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"figs/total_lobsterpercent.png"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
 </div>
-</div>
-<p>I would also like to view this same data by year. To do this, i would first need to refilter my object by year.<br>
+<p>I would also like to view this same data by site and individual year. To do this, i would first need to refilter my object.<br>
 </p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Filter by size and year</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lobster_size_lrg_year <span class="ot">&lt;-</span> lobster_abundance <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(YEAR <span class="sc">%in%</span> <span class="dv">2012</span><span class="sc">:</span><span class="dv">2022</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">SIZE_BIN =</span> <span class="fu">if_else</span>(SIZE_MM <span class="sc">&lt;=</span> <span class="dv">70</span>, <span class="st">"small"</span>, <span class="st">"large"</span>),<span class="at">YEAR =</span> <span class="fu">factor</span>(YEAR)) <span class="sc">%&gt;%</span><span class="fu">group_by</span>(YEAR, SITE, SIZE_BIN) <span class="sc">%&gt;%</span><span class="fu">summarize</span>(<span class="at">COUNT =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span><span class="fu">drop_na</span>()</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">#plot it</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(lobster_size_lrg_year,</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> YEAR, <span class="at">y =</span> COUNT, <span class="at">fill =</span> SIZE_BIN)) <span class="sc">+</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"fill"</span>) <span class="sc">+</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> SITE) <span class="sc">+</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent) <span class="sc">+</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>,<span class="at">y =</span> <span class="st">"Percent of lobsters"</span>,<span class="at">fill =</span> <span class="st">"Size bin"</span>) <span class="sc">+</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),<span class="at">legend.position =</span> <span class="st">"right"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="lobster-report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-Counts-by-Year-per-Site" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Scatterplot showing lobster counts on the y-axis and sites on the x-axis. Points are aligned by and colored by year.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Counts-by-Year-per-Site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lobster-report_files/figure-html/fig-Counts-by-Year-per-Site-1.png" class="img-fluid figure-img" alt="Scatterplot showing lobster counts on the y-axis and sites on the x-axis. Points are aligned by and colored by year." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Counts-by-Year-per-Site-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Lobster Counts by Year per Site.
+</figcaption>
 </figure>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"figs/total_lobsterbyyear.png"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Saving 7 x 5 in image</code></pre>
 </div>
-</div>
-<p>lobster_abundance %&gt;% filter(YEAR %in% c(2019, 2020, 2021)) %&gt;% count(MONTH)</p>
+</section>
+<section id="data-analysis-and-conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="data-analysis-and-conclusions">Data Analysis and Conclusions</h2>
+<p>Using the catch counts by year, I thought it would be interesting to see how the yearly lobster catch would compare to itself across time. My main thought is that there could be some trends that would warrant further investigation.</p>
+<p>To tackle this question, I first thought of the data as a landscape across time that we can derive external population pressures. First I generated <a href="#fig-Total-Lobster-by-Year-Site" class="quarto-xref">Figure&nbsp;1</a> to identify the sites that had the most lobsters counted in the year. Coloring the bars by sites helps identify sites with a larger quantity for that year. I find it interesting that the proportion of lobsters counted at the IVEE and NAPL sites increased a lot between 2012 and 2013. Perhaps there may have been a shift in these environments that warrant further study.</p>
+<p>Next, I wanted to see individual counts by site in the year. To accomplish this, I sorted the data into single data points, then graphed those as dots across the time frame grouped by the year on the x axis. With <a href="#fig-Counts-by-Year-per-Site" class="quarto-xref">Figure&nbsp;2</a>, we can see that every site beside the AQUE site had an almost parabolic change in observations at the sites across time. Pretty Cool!</p>
 </section>
 
 </main>

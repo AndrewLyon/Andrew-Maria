@@ -92,7 +92,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 
-lobster_abundance <- read_csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv")) %>% 
+lobster_abundance <- read.csv(here::here("data/Lobster_Abundance_All_Years_20220829.csv")) %>% 
     mutate(SIZE_MM = na_if(SIZE_MM, -99999))
 ```
 
